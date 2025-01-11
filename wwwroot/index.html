@@ -6,27 +6,26 @@
     <title>Text Converter</title>
     <script src="https://unpkg.com/vue@3"></script>
     <style>
-        body{
-            font-family: Arial, Helvetica, sans-serif;
+        body {
+            font-family: Arial, sans-serif;
             margin: 20px;
+            text-align: center;
         }
-        textarea, input{
-            width: 100%;
-            margin-bottom: 10px;
+        textarea {
+            width: 80%;
+            height: 100px;
+            margin: 10px 0;
             padding: 10px;
         }
-        button{
+        button {
             padding: 10px 20px;
             background-color: #007bff;
-            color: #fff;
+            color: white;
             border: none;
             cursor: pointer;
         }
-        button:hover{
+        button:hover {
             background-color: #0056b3;
-        }
-        .output p {
-            margin: 5px 0;
         }
     </style>
 </head>
@@ -37,52 +36,52 @@
         <button @click="convertText">Converter</button>
         <div class="output">
             <h3>Resultados:</h3>
-            <p><strong>Negrito:</strong>{{retults.bold}}</p>
+            <p><strong>Negrito:</strong> {{ results.bold }}</p>
             <p><em>Itálico:</em> {{ results.italic }}</p>
-            <p><strong><em> Negrito e Itálico </em></strong>{{results.boldItalic}}</p>
-            <p><u>Sublinhado:</u>{{result.underline}}</p>
+            <p><strong><em>Negrito e Itálico:</em></strong> {{ results.boldItalic }}</p>
+            <p><u>Sublinhado:</u> {{ results.underline }}</p>
         </div>
     </div>
     <script>
         const app = Vue.createApp({
-            data(){
-                return{
+            data() {
+                return {
                     inputText: "",
                     results: {
                         bold: "",
                         italic: "",
                         boldItalic: "",
                         underline: "",
-                    }
+                    },
                 };
             },
             methods: {
-                async convertText(){
-                    if(!this.inputText.trim()){
-                        alert("Por Favor, insira um texto.");
+                async convertText() {
+                    if (!this.inputText.trim()) {
+                        alert("Por favor, insira um texto.");
                         return;
                     }
                     try {
                         const response = await fetch("/convert", {
                             method: "POST",
                             headers: {
-                                "Content-Type": "application/json"
+                                "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ text: this.inputText})
+                            body: JSON.stringify({ text: this.inputText }),
                         });
-                        if(!response.ok){
-                            throw new Error("Error ao processar o texto.");
+                        if (!response.ok) {
+                            throw new Error("Erro ao processar o texto.");
                         }
                         this.results = await response.json();
-                    }catch (error){
-                        console.error(error);
+                    } catch (error) {
+                        console.error("Erro:", error);
                         alert("Erro ao converter texto.");
                     }
-                }
-            }
+                },
+            },
         });
+
         app.mount("#app");
     </script>
-    
 </body>
 </html>

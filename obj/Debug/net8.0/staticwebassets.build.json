@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "gSrXVh5MfHdoFg5nZ6ZbpEgTj1rMElZBkCxBGR8MByc=",
+  "Hash": "myeVkxLtxVopHGYi83itE8ZsYpii38HcektAJCDzw9A=",
   "Source": "TextConverter",
   "BasePath": "_content/TextConverter",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "TextConverter/wwwroot",
+      "Source": "TextConverter",
+      "ContentRoot": "/Users/maicongavino/dev/review_code/TextConverter/wwwroot/",
+      "BasePath": "_content/TextConverter",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "/Users/maicongavino/dev/review_code/TextConverter/wwwroot/index.html",
+      "SourceId": "TextConverter",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/maicongavino/dev/review_code/TextConverter/wwwroot/",
+      "BasePath": "_content/TextConverter",
+      "RelativePath": "index.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/index.html"
+    }
+  ]
 }

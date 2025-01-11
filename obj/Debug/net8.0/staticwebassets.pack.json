@@ -1,0 +1,25 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/maicongavino/dev/review_code/TextConverter/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.TextConverter.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.TextConverter.props",
+      "PackagePath": "build\\TextConverter.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.TextConverter.props",
+      "PackagePath": "buildMultiTargeting\\TextConverter.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.TextConverter.props",
+      "PackagePath": "buildTransitive\\TextConverter.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
