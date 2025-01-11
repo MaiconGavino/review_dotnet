@@ -31,3 +31,4 @@
 /Users/maicongavino/dev/review_code/TextConverter/obj/Debug/net8.0/TextConverter.pdb
 /Users/maicongavino/dev/review_code/TextConverter/obj/Debug/net8.0/TextConverter.genruntimeconfig.cache
 /Users/maicongavino/dev/review_code/TextConverter/obj/Debug/net8.0/ref/TextConverter.dll
+/Users/maicongavino/dev/review_code/TextConverter/obj/Debug/net8.0/TextConverter.sourcelink.json

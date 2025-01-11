@@ -1,7 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -16,29 +14,37 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/convert", (TextRequest request) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    if (string.IsNullOrWhiteSpace(request.Text))
+    {
+        return Results.BadRequest("O texto não pode ser nulo");
+    }
+    var response = new TextResponse
+    {
+        Bold = $"**{request.Text}**",
+        Italic = $"*{request.Text}*",
+        BoldItalic = $"***{request.Text}***",
+        Undeline = $"__{request.Text}__"
+    };
+    return Results.Ok(response);
 })
-.WithName("GetWeatherForecast")
+.WithName("TextConverter")
 .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
+public class TextRequest
 {
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    public string Text { get; set; } = string.Empty;
+}
+
+public class TextResponse
+{
+    public string Bold { get; set; } = string.Empty;
+
+    public string Italic { get; set; } = string.Empty;
+    public string BoldItalic { get; set; } = string.Empty;
+    public string Undeline { get; set; } = string.Empty;
+
 }
