@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Converter</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 20px;
+        }
+        textarea, input{
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        button{
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #0056b3;
+        }
+        .output p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Text Converter</h1>
+        <textarea v-model="inputText" placeholder="Digite seu texto aqui..."></textarea>
+        <button @click="convertText">Converter</button>
+        <div class="output">
+            <h3>Resultados:</h3>
+            <p><strong>Negrito:</strong>{{retults.bold}}</p>
+            <p><em>Itálico:</em> {{ results.italic }}</p>
+            <p><strong><em> Negrito e Itálico </em></strong>{{results.boldItalic}}</p>
+            <p><u>Sublinhado:</u>{{result.underline}}</p>
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data(){
+                return{
+                    inputText: "",
+                    results: {
+                        bold: "",
+                        italic: "",
+                        boldItalic: "",
+                        underline: "",
+                    }
+                };
+            },
+            methods: {
+                async convertText(){
+                    if(!this.inputText.trim()){
+                        alert("Por Favor, insira um texto.");
+                        return;
+                    }
+                    try {
+                        const response = await fetch("/convert", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ text: this.inputText})
+                        });
+                        if(!response.ok){
+                            throw new Error("Error ao processar o texto.");
+                        }
+                        this.results = await response.json();
+                    }catch (error){
+                        console.error(error);
+                        alert("Erro ao converter texto.");
+                    }
+                }
+            }
+        });
+        app.mount("#app");
+    </script>
+    
+</body>
+</html>
