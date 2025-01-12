@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configuração de serviços
@@ -9,9 +12,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin() // Permite qualquer origem (domínio)
-              .AllowAnyMethod() // Permite qualquer método (GET, POST, etc.)
-              .AllowAnyHeader(); // Permite qualquer cabeçalho
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -25,8 +28,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // Middleware para arquivos estáticos
-app.UseDefaultFiles(); // Permite carregar automaticamente o index.html
-app.UseStaticFiles();  // Serve arquivos estáticos da pasta wwwroot
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Adiciona o middleware de CORS
 app.UseCors();
@@ -40,7 +43,6 @@ app.Use(async (context, next) =>
         !Path.HasExtension(context.Request.Path.Value) &&
         context.Request.Path.Value != null)
     {
-        Console.WriteLine("Fallback para index.html");
         context.Request.Path = "/index.html";
         await context.Response.SendFileAsync("wwwroot/index.html");
     }
@@ -51,7 +53,7 @@ app.MapPost("/convert", (TextRequest request) =>
 {
     if (string.IsNullOrWhiteSpace(request.Text))
     {
-        return Results.BadRequest("O texto não pode ser nulo");
+        return Results.BadRequest(new { Message = "O texto não pode ser nulo ou vazio." });
     }
 
     var response = new TextResponse
@@ -59,7 +61,7 @@ app.MapPost("/convert", (TextRequest request) =>
         Bold = ConvertToBold(request.Text),
         Italic = ConvertToItalic(request.Text),
         BoldItalic = ConvertToBoldItalic(request.Text),
-        Undeline = ConvertUndeline(request.Text)
+        Underline = ConvertToUnderline(request.Text)
     };
 
     return Results.Ok(response);
@@ -69,26 +71,60 @@ app.MapPost("/convert", (TextRequest request) =>
 
 app.Run();
 
-//Função para conversão para unicode 
+// Funções de conversão de texto
 string ConvertToBold(string input)
 {
-    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D400 - 'A') : c));
-}
-
-string ConvertToBoldItalic(string input)
-{
-    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D468 - 'A') : c));
+    return string.Concat(RemoveAccents(input).Select(c =>
+        char.IsLetter(c) && c < 128
+            ? (char.IsUpper(c)
+                ? (char)(c - 'A' + 0x1D400)
+                : (char)(c - 'a' + 0x1D41A))
+            : c));
 }
 
 string ConvertToItalic(string input)
 {
-    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D434 - 'A') : c));
+    return string.Concat(RemoveAccents(input).Select(c =>
+        char.IsLetter(c) && c < 128
+            ? (char.IsUpper(c)
+                ? (char)(c - 'A' + 0x1D434)
+                : (char)(c - 'a' + 0x1D44E))
+            : c));
 }
 
-string ConvertUndeline(string input)
+string ConvertToBoldItalic(string input)
 {
-    return string.Concat(input.Select(char => char.IsLetter(c) ? $"{c}\u0332" : c));
+    return string.Concat(RemoveAccents(input).Select(c =>
+        char.IsLetter(c) && c < 128
+            ? (char.IsUpper(c)
+                ? (char)(c - 'A' + 0x1D468)
+                : (char)(c - 'a' + 0x1D482))
+            : c));
+}
 
+string ConvertToUnderline(string input)
+{
+    return string.Concat(input.Select(c =>
+        char.IsWhiteSpace(c)
+            ? " "
+            : $"{c}̲"));
+}
+
+// Função para remover acentos
+string RemoveAccents(string input)
+{
+    var normalized = input.Normalize(NormalizationForm.FormD);
+    var stringBuilder = new StringBuilder();
+
+    foreach (var c in normalized)
+    {
+        if (CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+        {
+            stringBuilder.Append(c);
+        }
+    }
+
+    return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
 }
 
 // Classes de requisição e resposta
@@ -102,5 +138,5 @@ public class TextResponse
     public string Bold { get; set; } = string.Empty;
     public string Italic { get; set; } = string.Empty;
     public string BoldItalic { get; set; } = string.Empty;
-    public string Undeline { get; set; } = string.Empty;
+    public string Underline { get; set; } = string.Empty;
 }
