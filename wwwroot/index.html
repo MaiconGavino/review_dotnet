@@ -5,41 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text Converter</title>
     <script src="https://unpkg.com/vue@3"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            text-align: center;
-        }
-        textarea {
-            width: 80%;
-            height: 100px;
-            margin: 10px 0;
-            padding: 10px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div id="app">
-        <h1>Text Converter</h1>
-        <textarea v-model="inputText" placeholder="Digite seu texto aqui..."></textarea>
-        <button @click="convertText">Converter</button>
-        <div class="output">
-            <h3>Resultados:</h3>
-            <p><strong>Negrito:</strong> {{ results.bold }}</p>
-            <p><em>Itálico:</em> {{ results.italic }}</p>
-            <p><strong><em>Negrito e Itálico:</em></strong> {{ results.boldItalic }}</p>
-            <p><u>Sublinhado:</u> {{ results.underline }}</p>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div id="app" class="bg-white rounded-lg shadow-lg p-8 w-full max-w-lg">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-4">Text Converter</h1>
+        <textarea v-model="inputText" 
+                  class="w-full p-3 border rounded-lg focus:outline-none focus:ring focus:ring-blue-200"
+                  placeholder="Digite seu texto aqui..."></textarea>
+        <button @click="convertText"
+                class="mt-4 w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-600">
+            Converter
+        </button>
+        <div v-if="results.bold" class="output mt-6">
+            <h3 class="text-xl font-semibold text-gray-700">Resultados:</h3>
+            <p><strong>Negrito:</strong> <span v-html="results.bold"></span></p>
+            <p><strong>Itálico:</strong> <span v-html="results.italic"></span></p>
+            <p><strong>Negrito e Itálico:</strong> <span v-html="results.boldItalic"></span></p>
+            <p><strong>Sublinhado:</strong> <span v-html="results.underline"></span></p>
         </div>
     </div>
     <script>

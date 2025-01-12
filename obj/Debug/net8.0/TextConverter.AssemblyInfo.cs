@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TextConverter")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90804c4e7158de4394b4572cd85702f137aa768a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4177c34e8a24287a6c686a56c7d78a61181f8594")]
 [assembly: System.Reflection.AssemblyProductAttribute("TextConverter")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TextConverter")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

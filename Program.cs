@@ -56,10 +56,10 @@ app.MapPost("/convert", (TextRequest request) =>
 
     var response = new TextResponse
     {
-        Bold = $"**{request.Text}**",
-        Italic = $"*{request.Text}*",
-        BoldItalic = $"***{request.Text}***",
-        Undeline = $"--{request.Text}--"
+        Bold = $"<b>{request.Text}</b>",
+        Italic = $"<i>{request.Text}</i>",
+        BoldItalic = $"<b><i>{request.Text}</i></b>",
+        Undeline = $"<u>{request.Text}</u>"
     };
 
     return Results.Ok(response);
