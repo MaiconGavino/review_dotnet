@@ -56,10 +56,10 @@ app.MapPost("/convert", (TextRequest request) =>
 
     var response = new TextResponse
     {
-        Bold = $"<b>{request.Text}</b>",
-        Italic = $"<i>{request.Text}</i>",
-        BoldItalic = $"<b><i>{request.Text}</i></b>",
-        Undeline = $"<u>{request.Text}</u>"
+        Bold = ConvertToBold(request.Text),
+        Italic = ConvertToItalic(request.Text),
+        BoldItalic = ConvertToBoldItalic(request.Text),
+        Undeline = ConvertUndeline(request.Text)
     };
 
     return Results.Ok(response);
@@ -68,6 +68,28 @@ app.MapPost("/convert", (TextRequest request) =>
 .WithOpenApi();
 
 app.Run();
+
+//Função para conversão para unicode 
+string ConvertToBold(string input)
+{
+    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D400 - 'A') : c));
+}
+
+string ConvertToBoldItalic(string input)
+{
+    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D468 - 'A') : c));
+}
+
+string ConvertToItalic(string input)
+{
+    return string.Concat(input.Select(char => char.IsLetter(c) ? (char)(char + 0x1D434 - 'A') : c));
+}
+
+string ConvertUndeline(string input)
+{
+    return string.Concat(input.Select(char => char.IsLetter(c) ? $"{c}\u0332" : c));
+
+}
 
 // Classes de requisição e resposta
 public class TextRequest
